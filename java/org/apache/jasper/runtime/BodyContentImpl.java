@@ -43,7 +43,9 @@ public class BodyContentImpl extends BodyContent {
         System.getProperty("line.separator");
     private static final boolean LIMIT_BUFFER = 
         Boolean.valueOf(System.getProperty("org.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER", "false")).booleanValue();
-    
+    public static final int MAX_TAG_BUFFER_CAPACITY =
+        Integer.valueOf(System.getProperty("org.apache.jasper.runtime.BodyContentImpl.MAX_TAG_BUFFER_CAPACITY", "32768")).intValue();
+
     private char[] cb;
     private int nextChar;
     private boolean closed;
@@ -494,7 +496,7 @@ public class BodyContentImpl extends BodyContent {
             throw new IOException();
         } else {
             nextChar = 0;
-            if (LIMIT_BUFFER && (cb.length > Constants.DEFAULT_TAG_BUFFER_SIZE)) {
+            if (LIMIT_BUFFER && (cb.length > MAX_TAG_BUFFER_CAPACITY)) {
                 cb = new char[Constants.DEFAULT_TAG_BUFFER_SIZE];
                 bufferSize = cb.length;
             }
